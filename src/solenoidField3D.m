@@ -1,14 +1,8 @@
 function [Bx, By, Bz] = solenoidField3D (zPos, radius, current, Turns, nParts, wireThickness, xxP, yyP, zzP, straight)
 error = 500;
 m = current*10^-7;                      % mu_0/2*pi * current through the Loop... 1(ANTI-CLOCK), -1(CLOCK)
-% dl = 2*pi*radius/nParts;                % Length of each element..
 
-% Turns = Turns*2
-% nParts = nParts/2                     %NW half the parts  
 dl = 2*pi*radius/nParts;                %NW Length of each  element..
-
-% dtht = 360/nParts;                      % Loop elements divided w.r.to degrees..
-% tht = (0+dtht/2): dtht : (360-dtht/2);  % Angle of each element w.r.to origin..
 
 %Change to all in one turn
 allDeg = Turns*360;
@@ -19,25 +13,14 @@ tht = (0+dtht/2): dtht : (allDeg-dtht/2);  %NW Angle of each element w.r.to orig
 xC =  radius.*cosd(tht).*ones(1,nParts);        % X coordinates...
 yC =  radius.*sind(tht).*ones(1,nParts);        % Y coordinates...
 
-% zC will change for each turn, -Z to +Z, and will be varied during iteration...
 if (straight)
     zC = zeros(1,nParts); %NWkeine Ahnung ob das noch richtig ist...
 else
     zC = (1:nParts)*wireThickness/(nParts/Turns);
 end
-% h = -wireThickness*(Turns-1)/2 : wireThickness : (wireThickness)*(Turns-1)/2;
-% h = -wireThickness*(Turns-2)/2 : wireThickness : (wireThickness)*(Turns)/2; %NW fix for small bug about starting point (works with Turns = 6 and wireThickness 0.2)
-
-% h = -wireThickness*(Turns/2-1)/2 : wireThickness/2 : (wireThickness)*(Turns/2-1)/2; %NW fix for small bug about starting point (works with Turns = 6 and wireThickness 0.2)
-% h = -wireThickness*(Turns-1)/2 : wireThickness/2 : (wireThickness)*(Turns-1)/2; %NW fix for small bug about starting point (works with Turns = 6 and wireThickness 0.2)
 
 h = wireThickness*(Turns)/2 %0.550e-03 
 
-% XYZ Coordinates/Location of each element from the origin(0,0,0), Center of the Loop is taken as origin..
-% angularIncrement = 360/nParts;                           % Loop elements divided w.r.to degrees..
-% Vangle = (0+angularIncrement/2): angularIncrement : (360-angularIncrement/2);  % Angle of each element w.r.to origin..
-% angularIncrement = 180/nParts;                           % Loop elements divided w.r.to degrees..
-% Vangle = (0+angularIncrement/2): angularIncrement : (180-angularIncrement/2);  % Angle of each element w.r.to origin..
 
 % Length(Projection) & Direction of each current element in Vector form..
 Lx = dl.*sind(tht);      % Length of each element on X axis..
